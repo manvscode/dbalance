@@ -78,7 +78,7 @@ void csv_parse_field_done(void* f, size_t sz, void* user_data )
 			//position->quantity = atoi( field );
 			int quantity = 0;
 			int quantity_multiplier = 1;
-			char quantity_multiplier_str[32];
+			char quantity_multiplier_str[32] = { '\0' };
 			sscanf(field, "%d%s", &quantity, quantity_multiplier_str);
 
 			if (strcasecmp("M", quantity_multiplier_str) == 0) {
