@@ -33,6 +33,7 @@ static bool command_set_yield_target( const cmd_opt_ctx_t* ctx, void* user_data 
 static bool command_show_help( const cmd_opt_ctx_t* ctx, void* user_data );
 static void command_error( cmd_opt_result_t error, const char* opt, void* user_data );
 static int position_market_value_compare(const void* l, const void* r);
+static int position_yield_compare(const void* l, const void* r);
 double position_market_value(const position_t* position);
 void portfolio_calculate(const position_t* positions, double* portfolio_value, double* portfolio_yield, const char* exclude);
 
@@ -274,7 +275,7 @@ int position_yield_compare(const void* l, const void* r)
 {
 	const position_t* left = l;
 	const position_t* right = r;
-	return (int) 100 * (right->dividend_yield - left->dividend_yield);
+	return (int) 100000 * (right->dividend_yield - left->dividend_yield);
 }
 
 
@@ -360,12 +361,17 @@ int main( int argc, char* argv[] )
 	printf("Current portfolio:\n\n");
 
 
-	printf("%10s %-6s $%-7s %7s%%  $%-10s\n", "Symbol", "Qty", "Price", "Yield", "Mkt. Value" );
+	printf("%10s %-6s $%-7s %7s%%  $%-10s  %7s%%\n", "Symbol", "Qty", "Price", "Yield", "Mkt. Value", "Weight" );
 	printf("  ---------------------------------------------------------\n");
 	for( int i = 0; i < lc_vector_size(app.positions); i++)
 	{
 		const position_t* position = &app.positions[i];
-		printf("%10.10s %-6d $%-'7.2lf %7.2lf%%  $%-'10.2lf\n", position->symbol, position->quantity, position->price, 100 * position->dividend_yield, position_market_value(position));
+        const double market_value = position_market_value(position);
+
+		printf("%10.10s %-6d $%-'7.2lf %7.2lf%%  $%-'10.2lf  %7.1lf%%\n",
+                position->symbol, position->quantity, position->price,
+                100 * position->dividend_yield, market_value,
+                100 * (market_value / portfolio_value));
 	}
 	printf("  ---------------------------------------------------------\n");
 
