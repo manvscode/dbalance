@@ -5,10 +5,10 @@ AM_INIT_AUTOMAKE([1.13 foreign silent-rules dist-zip -Wall -Werror])
 AM_SILENT_RULES([no])
 
 AC_PROG_CC
-AC_PROG_CC_STDC
+#AC_PROG_CC_STDC
 AC_C_INLINE
-AC_HEADER_STDC
-AC_HEADER_STDBOOL
+#AC_HEADER_STDC
+#AC_HEADER_STDBOOL
 
 
 AC_MSG_NOTICE([---------------------------------------------------------------------])
